@@ -20,25 +20,56 @@ let users=[
 },
 
 ]
+//creating miniapp
+const userRouter=express.Router();
+// which route and router to use
+app.use('/user',userRouter)
+userRouter
+.route('/')
+.get(getUser)
+.post(postUser)
+.patch(updateUser)
+.delete(deleteUser)
 
-app.get('/user',(req,res)=>{
-    console.log(req.query)
-    res.send(users);
-})
+userRouter
+.route('/:id')
+.get(getUserById)
 
-app.post('/user',(req,res)=>{//send data from frontend to backend
-console.log(req.body)
-users=req.body;
-res.json({
-    messages:"data receieved successfully",
-    user:req.body
-});
-})
+// app.get('/user',)
+
+// app.post('/user')
 // note:when we send data from front end to backend it goes to req body
 
 
 //update
-app.patch('/user',(req,res)=>{
+// app.patch('/user',) 
+
+
+//delete
+
+// app.delete('/user')
+
+
+//params
+// app.get('/user/:id',)
+
+
+function getUser(req,res){
+    console.log(req.query)
+    res.send(users);
+}
+
+function postUser(req,res){//send data from frontend to backend
+    console.log(req.body)
+    users=req.body;
+    res.json({
+        messages:"data receieved successfully",
+        user:req.body
+    });
+};
+
+
+function updateUser(req,res){
     console.log('req-body->',req.body)
     //update data in users object
     let dataToBeUpdated=req.body;
@@ -48,24 +79,28 @@ app.patch('/user',(req,res)=>{
     res.json({
         messages:"data updated sucessfully",
     })
-}) 
+}
 
-
-//delete
-
-app.delete('/user',(req,res)=>{
+function deleteUser(req,res){
     users={}
     res.json({
         messages:"data deleted"
     })
-})
+}
 
-
-//params
-app.get('/user/:username',(req,res)=>{
-    console.log(req.params.username)
-    console.log(req.params);
+function getUserById(req,res ) {
+    console.log(req.params.id)
+    let paramID=req.params.id
+;
+for(let i=0;i<users.length;i++){
+    if(users[i]['id']==paramID){
+        obj=users[i];
+    }
+}    
+    res.json({
+        message:"user id is recieved",
+        data:obj
+        
+    });
     
-    res.send("user id is recieved");
-    
-})
+}
