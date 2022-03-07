@@ -35,6 +35,16 @@ userRouter
 .route('/:id')
 .get(getUserById)
 
+//for signup miniapp
+const authRouter=express.Router();
+app.use("/auth",authRouter);
+
+authRouter
+.route('/signup')
+.get(getSignup)
+.post(postSignup)
+
+
 // app.get('/user',)
 
 // app.post('/user')
@@ -104,3 +114,20 @@ for(let i=0;i<users.length;i++){
     });
     
 }
+
+
+//signup
+
+function getSignup(req,res){
+    res.sendFile('/public/index.html',{root:__dirname});
+
+}
+
+function postSignup(req,res){
+    let obj=req.body;
+    console.log("backend",obj)
+    res.json({
+        message:"user signed up",
+        data:obj
+    });
+};
