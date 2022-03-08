@@ -41,7 +41,7 @@ app.use("/auth",authRouter);
 
 authRouter
 .route('/signup')
-.get(getSignup)
+.get(middleware,getSignup)
 .post(postSignup)
 
 
@@ -65,6 +65,7 @@ authRouter
 
 
 function getUser(req,res){
+  
     console.log(req.query)
     res.send(users);
 }
@@ -119,6 +120,7 @@ for(let i=0;i<users.length;i++){
 //signup
 
 function getSignup(req,res){
+    console.log("get signup called")
     res.sendFile('/public/index.html',{root:__dirname});
 
 }
@@ -131,3 +133,10 @@ function postSignup(req,res){
         data:obj
     });
 };
+
+//midlleware can end or cut req and res cycle
+
+function middleware(req,res,next){
+    console.log("middleware encountered");
+    next();
+}
