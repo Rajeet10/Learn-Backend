@@ -3,7 +3,7 @@ const express=require('express')
 const app=express()
 // will show undefined if not use middleware
 //middleware function->post->json
-app.use(express.json())
+app.use(express.json()) //global middleware
 
 app.listen(3000)
 
@@ -26,9 +26,9 @@ const userRouter=express.Router();
 app.use('/user',userRouter)
 userRouter
 .route('/')
-.get(getUser)
-.post(postUser)
-.patch(updateUser)
+.get(getUser)//pathspecific middleware
+.post(postUser)//pathspecific middleware
+.patch(updateUser)//pathspecific middleware
 .delete(deleteUser)
 
 userRouter
@@ -41,7 +41,7 @@ app.use("/auth",authRouter);
 
 authRouter
 .route('/signup')
-.get(middleware,getSignup)
+.get(middleware1,getSignup,middleware2)
 .post(postSignup)
 
 
@@ -119,9 +119,10 @@ for(let i=0;i<users.length;i++){
 
 //signup
 
-function getSignup(req,res){
+function getSignup(req,res,next){
     console.log("get signup called")
     res.sendFile('/public/index.html',{root:__dirname});
+    next();
 
 }
 
@@ -136,7 +137,14 @@ function postSignup(req,res){
 
 //midlleware can end or cut req and res cycle
 
-function middleware(req,res,next){
-    console.log("middleware encountered");
+function middleware1(req,res,next){
+    console.log("middleware1 encountered");
     next();
+}
+
+function middleware2(req,res){
+    console.log("middleware2 encountered");
+    // next();
+    console.log("middleware 2 ended re/req cycle")
+    res.sendFile('/public/index.html',{root:__dirname});
 }
