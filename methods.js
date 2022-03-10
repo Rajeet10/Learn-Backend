@@ -135,12 +135,13 @@ function getSignup(req,res,next){
 
 }
 
-function postSignup(req,res){
-    let obj=req.body;
-    console.log("backend",obj)
+async function postSignup(req,res){
+    let dataObj=req.body;  //data object
+    let user=await userModel.create(dataObj)
+    console.log("backend",user)
     res.json({
         message:"user signed up",
-        data:obj
+        data:user
     });
 };
 
