@@ -69,7 +69,9 @@ authRouter
 async function getUser(req,res){
   
     // console.log(req.query)
-    let allUsers=await userModel.find();
+    let allUsers=await userModel.findOne({
+        name:"rajeet"
+    });
     res.json({
         message:'list of all users',
         data:allUsers,
