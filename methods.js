@@ -66,10 +66,15 @@ authRouter
 // app.get('/user/:id',)
 
 
-function getUser(req,res){
+async function getUser(req,res){
   
-    console.log(req.query)
-    res.send(users);
+    // console.log(req.query)
+    let allUsers=await userModel.find();
+    res.json({
+        message:'list of all users',
+        data:allUsers,
+    
+    });
 }
 
 function postUser(req,res){//send data from frontend to backend
@@ -191,14 +196,14 @@ const userSchema=mongoose.Schema({
 
 //models
 const userModel=mongoose.model('userModel',userSchema);//from which schema to make model
-(async function createUser(){
-    let user={
-        name:'rajeet',
-        email:'abc@gmail.com',
-        password:'12345678',
-        confirmPassword:'12345678'
-    };
-    let data=await userModel.create(user);
-    console.log(data);
-})();
+// (async function createUser(){
+//     let user={
+//         name:'ram',
+//         email:'abcd@gmail.com',
+//         password:'12345678',
+//         confirmPassword:'12345678'
+//     };
+//     let data=await userModel.create(user);
+//     console.log(data);
+// })();
 
