@@ -179,12 +179,26 @@ const userSchema=mongoose.Schema({
     },
     password:{
         type:String,
-        required:true
+        required:true,
+        minLength:7,
     },
     confirmPassword:{
         type:String,
-        required:true
+        required:true,
+        minLength:7,
     }
 });
 
 //models
+const userModel=mongoose.model('userModel',userSchema);//from which schema to make model
+(async function createUser(){
+    let user={
+        name:'rajeet',
+        email:'abc@gmail.com',
+        password:'12345678',
+        confirmPassword:'12345678'
+    };
+    let data=await userModel.create(user);
+    console.log(data);
+})();
+
