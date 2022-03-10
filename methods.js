@@ -3,6 +3,8 @@ const express=require('express')
 const app=express()
 // will show undefined if not use middleware
 //middleware function->post->json
+
+const mongoose=require('mongoose')
 app.use(express.json()) //global middleware
 
 app.listen(3000)
@@ -148,3 +150,21 @@ function middleware2(req,res){
     console.log("middleware 2 ended re/req cycle")
     res.sendFile('/public/index.html',{root:__dirname});
 }
+
+
+//mongoose
+const db_link='mongodb+srv://admin:5O5oNnLmbPmIU2xD@cluster0.mlv26.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+
+mongoose.connect(db_link)
+.then(function(db){
+    console.log(db)
+  console.log('db connect')
+})
+.catch(function(err){
+  console.log(err)
+})
+
+
+//make schema
+
+const userSchema
