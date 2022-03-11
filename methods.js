@@ -89,15 +89,17 @@ function postUser(req,res){//send data from frontend to backend
 };
 
 
-function updateUser(req,res){
+async function updateUser(req,res){
     console.log('req-body->',req.body)
     //update data in users object
     let dataToBeUpdated=req.body;
-    for(key in dataToBeUpdated){
-        users[key]=dataToBeUpdated[key];//key =age
-    }
+    let user=await userModel.findOneAndUpdate({email:'ema123@gmail.com'},dataToBeUpdated)
+    // for(key in dataToBeUpdated){
+    //     users[key]=dataToBeUpdated[key];//key =age
+    // }
     res.json({
         messages:"data updated sucessfully",
+        data:user 
     })
 }
 
