@@ -103,10 +103,13 @@ async function updateUser(req,res){
     })
 }
 
-function deleteUser(req,res){
-    users={}
+async function deleteUser(req,res){
+    // users={}
+    // let dataToBeDeleted=req.body;
+    let user =await userModel.findOneAndDelete({email:"werdo@gmail.com"})
     res.json({
-        messages:"data deleted"
+        messages:"data deleted",
+        data:user
     })
 }
 
@@ -198,6 +201,17 @@ const userSchema=mongoose.Schema({
         minLength:7,
     }
 });
+
+//mongoose hook
+//pre hook
+userSchema.pre('save',function(){
+    console.log("before saving in db",this);
+})
+//post hook
+//after save event occurs
+userSchema.post('save',function(doc){
+    console.log("after saving in db",doc);
+})
 
 //models
 const userModel=mongoose.model('userModel',userSchema);//from which schema to make model
