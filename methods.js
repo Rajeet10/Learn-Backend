@@ -1,5 +1,5 @@
 const express=require('express')
-
+const emailValidator=require('email-validator')
 const app=express()
 // will show undefined if not use middleware
 //middleware function->post->json
@@ -186,9 +186,12 @@ const userSchema=mongoose.Schema({
         required:true,
     },
     email:{
-        type:String,
+        type:String, 
         required:true,
-        unique:true
+        unique:true,
+        validate:function(){
+            return emailValidator.validate(this.email)
+        }
     },
     password:{
         type:String,
@@ -199,6 +202,9 @@ const userSchema=mongoose.Schema({
         type:String,
         required:true,
         minLength:7,
+        validate:function(){
+            return this.confirmPassword=this.password
+        }
     }
 });
 
