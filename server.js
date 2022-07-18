@@ -1,7 +1,12 @@
 const http=require('http')
 const fs=require('fs')
 const _=require('lodash')
-
+var express = require('express')
+var cors = require('cors')
+var app = express()
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(express.json());
 const server=http.createServer((req,res)=>{
     console.log("request has been made from browswer");
     // res.setHeader('Content-Type','text/plain')

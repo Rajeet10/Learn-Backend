@@ -1,11 +1,12 @@
 const express=require('express')
-const emailValidator=require('email-validator')
+const userModel=require('./models/userModel')
 const app=express()
+app.use(express.json());
 // will show undefined if not use middleware
 //middleware function->post->json
 
 const mongoose=require('mongoose')
-app.use(express.json()) //global middleware
+
 
 app.listen(3000)
 
@@ -105,8 +106,8 @@ async function updateUser(req,res){
 
 async function deleteUser(req,res){
     // users={}
-    // let dataToBeDeleted=req.body;
-    let user =await userModel.findOneAndDelete({email:"werdo@gmail.com"})
+    let dataToBeDeleted=req.body;
+    let user =await userModel.findOneAndDelete({dataToBeDeleted})
     res.json({
         messages:"data deleted",
         data:user
@@ -133,7 +134,9 @@ for(let i=0;i<users.length;i++){
 
 //signup
 
-function getSignup(req,res,next){
+async function getSignup(req,res,next){
+    // let dataObj=req.body;
+    // let user=await userModel.create(dataObj) 
     console.log("get signup called")
     res.sendFile('/public/index.html',{root:__dirname});
     next();
@@ -164,71 +167,4 @@ function middleware2(req,res){
     res.sendFile('/public/index.html',{root:__dirname});
 }
 
-
-//mongoose
-const db_link='mongodb+srv://admin:5O5oNnLmbPmIU2xD@cluster0.mlv26.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-
-mongoose.connect(db_link)
-.then(function(db){
-    console.log(db)
-  console.log('db connect')
-})
-.catch(function(err){
-  console.log(err)
-})
-
-
-//make schema
-
-const userSchema=mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
-    },
-    email:{
-        type:String, 
-        required:true,
-        unique:true,
-        validate:function(){
-            return emailValidator.validate(this.email)
-        }
-    },
-    password:{
-        type:String,
-        required:true,
-        minLength:7,
-    },
-    confirmPassword:{
-        type:String,
-        required:true,
-        minLength:7,
-        validate:function(){
-            return this.confirmPassword=this.password
-        }
-    }
-});
-
-//mongoose hook
-//pre hook
-userSchema.pre('save',function(){
-    console.log("before saving in db",this);
-})
-//post hook
-//after save event occurs
-userSchema.post('save',function(doc){
-    console.log("after saving in db",doc);
-})
-
-//models
-const userModel=mongoose.model('userModel',userSchema);//from which schema to make model
-// (async function createUser(){
-//     let user={
-//         name:'ram',
-//         email:'abcd@gmail.com',
-//         password:'12345678',
-//         confirmPassword:'12345678'
-//     };
-//     let data=await userModel.create(user);
-//     console.log(data);
-// })();
 
